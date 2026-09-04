@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.patprochazka.risecodex</id>
   <name>Rise Codex Theme</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <vendor>Pat Prochazka</vendor>
   <description><![CDATA[
     <p><b>Rise / Codex</b> &mdash; a dark, disciplined IDE theme. Aged iron, oxidized brass, parchment,
@@ -11,6 +11,7 @@
     <p><i>IN CODEX VERITAS</i></p>
   ]]></description>
   <change-notes><![CDATA[
+    <p>1.0.3 &mdash; errors drawn as a rounded ember box around the word.</p>
     <p>1.0.2 &mdash; errors highlight the whole word on an ember background instead of a wavy underline.</p>
     <p>1.0.1 &mdash; text tokens lifted halfway (lighter, slightly more saturated), inactive islands less dimmed,
     new-UI checkbox palette keys.</p>

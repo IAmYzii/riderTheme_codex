@@ -229,7 +229,7 @@ ATTR_OVERRIDES.update({
     "MARKDOWN_TABLE_SEPARATOR": attr(fg=P.ASH, font=0),
     "MARKDOWN_HTML_BLOCK": attr(fg=P.PARCHMENT),
     # errors / warnings
-    "ERRORS_ATTRIBUTES": attr(bg=P.EMBER_RED, fg=P.BRIGHT_PARCHMENT, stripe=P.EMBER_RED),  # whole word on ember, like a breakpoint line
+    "ERRORS_ATTRIBUTES": attr(effect=P.EMBER_RED, effect_type=7, fg=P.EMBER_BRIGHT, stripe=P.EMBER_RED),  # rounded ember box (7 = ROUNDED_BOX); 1.0.2 used bg=EMBER_RED fill
     "WARNING_ATTRIBUTES": attr(effect=P.CANDLE_GOLD, effect_type=2, stripe=P.OLD_GOLD),
     "WEAK_WARNING_ATTRIBUTES": attr(effect=P.FADED_GOLD, effect_type=2, stripe=P.FADED_GOLD),
     "INFO_ATTRIBUTES": attr(effect=P.FADED_INK, effect_type=2, stripe=P.FADED_INK),
@@ -239,8 +239,8 @@ ATTR_OVERRIDES.update({
     "NOT_USED_ELEMENT_ATTRIBUTES": attr(fg=P.ASH),
     "DEPRECATED_ATTRIBUTES": attr(effect=P.OLD_PAPER, effect_type=3),
     "MARKED_FOR_REMOVAL_ATTRIBUTES": attr(effect=P.EMBER_RED, effect_type=3),
-    "WRONG_REFERENCES_ATTRIBUTES": attr(bg=P.EMBER_RED, fg=P.BRIGHT_PARCHMENT, stripe=P.EMBER_RED, font=0),
-    "RUNTIME_ERROR": attr(bg=P.EMBER_RED, fg=P.BRIGHT_PARCHMENT, stripe=P.EMBER_RED),
+    "WRONG_REFERENCES_ATTRIBUTES": attr(effect=P.EMBER_RED, effect_type=7, fg=P.EMBER_BRIGHT, stripe=P.EMBER_RED, font=0),
+    "RUNTIME_ERROR": attr(effect=P.EMBER_RED, effect_type=7, fg=P.EMBER_BRIGHT, stripe=P.EMBER_RED),
     "GENERIC_SERVER_ERROR_OR_WARNING": attr(effect=P.OLD_GOLD, effect_type=1, stripe=P.OLD_GOLD),
     "DUPLICATE_FROM_SERVER": attr(bg=P.WARNING_SECONDARY_BG),
     "DELETED_TEXT_ATTRIBUTES": attr(fg=P.PARCHMENT, effect=P.EMBER_RED, effect_type=3),
