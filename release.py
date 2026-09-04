@@ -65,7 +65,7 @@ def main():
         sh("git", "commit", "-q", "-m", f"Release {version}")
     tags = sh("git", "tag", "--list", f"v{version}")
     if not tags:
-        sh("git", "tag", f"v{version}")
+        sh("git", "tag", "-a", f"v{version}", "-m", f"Release {version}")
     print(f"release {version} committed and tagged.")
     print(f"plugin repository URL for Rider: {repo_url}")
     print("publish with: git push --follow-tags")

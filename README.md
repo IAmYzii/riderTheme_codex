@@ -42,7 +42,7 @@ git push --follow-tags    # publish
 ```
 
 On every machine, once: Settings → Plugins → ⚙ → Manage Plugin Repositories → add
-`https://raw.githubusercontent.com/<owner>/rise-codex-theme/main/repo/updatePlugins.xml`, then install
+`https://raw.githubusercontent.com/IAmYzii/riderTheme_codex/main/repo/updatePlugins.xml`, then install
 "Rise Codex Theme" from the Marketplace tab (updates arrive like any other plugin). Theme/scheme selection
 syncs via Backup and Sync; the UI font (Cambria 14) is per machine — set it in Appearance or run `apply.py`.
 
