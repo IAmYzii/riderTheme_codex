@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugins>
+  <plugin id="com.patprochazka.risecodex" url="https://raw.githubusercontent.com/IAmYzii/riderTheme_codex/main/repo/rise-codex-theme-1.0.1.jar" version="1.0.1">
+    <idea-version since-build="252" />
+    <name>Rise Codex Theme</name>
+    <vendor>Pat Prochazka</vendor>
+    <description><![CDATA[Dark, disciplined IDE theme: aged iron, oxidized brass, parchment, candlelight, sealing wax.]]></description>
+    <change-notes><![CDATA[<p>1.0.1 &mdash; text tokens lifted halfway (lighter, slightly more saturated), inactive islands less dimmed,
+    new-UI checkbox palette keys.</p>
+    <p>1.0.0 &mdash; initial release.</p>]]></change-notes>
+  </plugin>
+</plugins>
