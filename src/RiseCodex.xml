@@ -933,9 +933,9 @@
     </option>
     <option name="ERRORS_ATTRIBUTES">
       <value>
-        <option name="EFFECT_COLOR" value="A14D3E" />
-        <option name="EFFECT_TYPE" value="2" />
+        <option name="BACKGROUND" value="A14D3E" />
         <option name="ERROR_STRIPE_COLOR" value="A14D3E" />
+        <option name="FOREGROUND" value="DCC9AB" />
       </value>
     </option>
     <option name="EXECUTIONPOINT_ATTRIBUTES">
@@ -1804,9 +1804,9 @@
     </option>
     <option name="RUNTIME_ERROR">
       <value>
-        <option name="EFFECT_COLOR" value="A14D3E" />
-        <option name="EFFECT_TYPE" value="2" />
+        <option name="BACKGROUND" value="A14D3E" />
         <option name="ERROR_STRIPE_COLOR" value="A14D3E" />
+        <option name="FOREGROUND" value="DCC9AB" />
       </value>
     </option>
     <option name="ReSharper.ASP_NET_MVC_ACTION">
@@ -2866,9 +2866,10 @@
     </option>
     <option name="WRONG_REFERENCES_ATTRIBUTES">
       <value>
+        <option name="BACKGROUND" value="A14D3E" />
         <option name="ERROR_STRIPE_COLOR" value="A14D3E" />
         <option name="FONT_TYPE" value="0" />
-        <option name="FOREGROUND" value="C46655" />
+        <option name="FOREGROUND" value="DCC9AB" />
       </value>
     </option>
     <option name="XML_ATTRIBUTE_NAME">
