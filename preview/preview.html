@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rise Codex — preview</title>
+<style>
+  :root {
+    --void:#0B0908; --obsidian:#110E0C; --iron:#181310; --raised:#211A15; --selected:#2A211A;
+    --border:#3B2D22; --soft-border:#2C221A; --bronze:#6E5033; --old-gold:#A37843; --candle:#C09152;
+    --parchment:#C7AE87; --old-paper:#9E8768; --ash:#75685A; --faded-ink:#50463C; --keyword:#B9663D;
+    --copper:#B87545; --wax:#783A32; --ember:#A14D3E; --ember-bright:#B75A49; --brass:#77704E; --type:#8E8663;
+    --cold:#748080; --cold-bright:#8C9999; --faded-gold:#806C50; --guide:#30271F; --selection:#49331F;
+    --search-bg:#5A3C20; --search-fg:#D2B47C; --bright:#D5C3A5; --caret-row:#171210; --exec:#4A3418;
+    --brk:#3A211D; --diff-ins:#2A2B1C; --diff-mod:#2E2418; --diff-del:#2E1B18;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--void); color:var(--parchment); font:13px Cambria, Georgia, serif; }
+  .frame { width:1280px; margin:0 auto; background:var(--void); padding:0 0 8px; }
+  .toolbar { height:40px; display:flex; align-items:center; gap:14px; padding:0 14px; color:var(--old-paper); }
+  .toolbar .proj { color:var(--parchment); font-weight:600; letter-spacing:.2px; display:flex; align-items:center; gap:8px; }
+  .avatar { width:18px; height:18px; border-radius:4px; background:linear-gradient(135deg,#B87545,#C4875A); color:var(--void); font:bold 11px Cambria; display:flex; align-items:center; justify-content:center; }
+  .run { margin-left:auto; display:flex; align-items:center; gap:6px; }
+  .btn { padding:3px 10px; border-radius:5px; background:var(--raised); color:var(--old-paper); border:1px solid var(--border); }
+  .btn.run-b { background:var(--brass); color:var(--bright); border-color:var(--brass); }
+  .btn.stop { background:var(--wax); color:var(--bright); border-color:var(--wax); }
+  .motto { color:var(--faded-ink); letter-spacing:2px; font-size:11px; }
+  .islands { display:grid; grid-template-columns:44px 250px 1fr; grid-template-rows:auto 190px; gap:6px; padding:0 6px; }
+  .island { border-radius:12px; background:var(--iron); overflow:hidden; }
+  .stripe { grid-column:1; grid-row:1 / span 2; background:transparent; display:flex; flex-direction:column; gap:12px; align-items:center; padding-top:10px; }
+  .project { grid-column:2; grid-row:1 / span 2; }
+  .editor { grid-column:3; grid-row:1; }
+  .bottom { grid-column:2 / span 2; grid-row:2; }
+  .stripe i { width:18px; height:18px; border-radius:4px; border:1.5px solid var(--old-paper); opacity:.75; display:block; }
+  .stripe i.on { background:var(--bronze); border-color:var(--bronze); opacity:1; }
+  .tw-header { padding:8px 12px; color:var(--parchment); font-weight:600; border-bottom:1px solid var(--soft-border); display:flex; gap:10px; }
+  .tw-header span.dim { color:var(--ash); font-weight:400; }
+  .tree { padding:6px 0; font-size:13px; }
+  .tree div { padding:3px 12px; white-space:nowrap; }
+  .tree .sel { background:var(--selection); }
+  .tree .hover { background:var(--raised); }
+  .tree .dim { color:var(--ash); }
+  .tree .mod { color:var(--candle); }
+  .tree .ico { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:7px; background:var(--old-paper); vertical-align:-1px; }
+  .tree .ico.cs { background:var(--old-gold); } .tree .ico.dir { background:var(--bronze); } .tree .ico.json { background:var(--copper); } .tree .ico.yaml { background:var(--type); }
+  .editor { background:var(--obsidian); }
+  .tabs { display:flex; background:var(--obsidian); border-bottom:1px solid var(--soft-border); }
+  .tab { padding:8px 14px; color:var(--ash); }
+  .tab.active { background:var(--raised); color:var(--candle); border-bottom:3px solid var(--bronze); border-radius:6px 6px 0 0; }
+  .tab.hover { color:var(--old-paper); }
+  pre.code { margin:0; padding:10px 0; font:15px/1.55 "Iosevka Term", "JetBrains Mono", Consolas, monospace; color:var(--parchment); counter-reset:ln; }
+  pre.code .ln { display:block; position:relative; padding-left:64px; padding-right:12px; }
+  pre.code .ln::before { counter-increment:ln; content:counter(ln); position:absolute; left:0; width:44px; text-align:right; color:var(--faded-ink); }
+  pre.code .ln.cur { background:var(--caret-row); } pre.code .ln.cur::before { color:var(--old-gold); }
+  pre.code .ln.exec { background:var(--exec); font-weight:bold; }
+  pre.code .ln.brk { background:var(--brk); }
+  pre.code .g { position:absolute; left:52px; width:3px; top:2px; bottom:2px; border-radius:1px; }
+  .g.ins { background:#4A4A2E; } .g.mod { background:var(--bronze); }
+  .k { color:var(--keyword); } .t { color:var(--type); } .m { color:var(--candle); } .p { color:var(--old-paper); }
+  .s { color:var(--old-gold); } .n { color:var(--cold); } .c { color:var(--ash); } .d { color:var(--faded-gold); }
+  .a { color:var(--copper); } .o { color:var(--old-paper); } .ns { color:var(--old-paper); } .const { color:var(--old-gold); }
+  .todo { color:var(--candle); font-weight:bold; } .hint { background:var(--raised); color:var(--ash); border-radius:3px; padding:0 4px; font-size:12px; }
+  .sel { background:var(--selection); } .usage { background:var(--selected); } .found { background:var(--search-bg); color:var(--search-fg); }
+  .err { text-decoration:wavy underline var(--ember); text-decoration-skip-ink:none; } .warn { text-decoration:wavy underline var(--candle); text-decoration-skip-ink:none; }
+  .caret { border-left:2px solid var(--candle); margin-left:-1px; }
+  .brace { background:var(--border); color:var(--candle); font-weight:bold; }
+  .bottom { display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:6px; }
+  .pane { background:var(--iron); border-radius:12px; overflow:hidden; }
+  .pane pre { margin:0; padding:8px 12px; font:13px/1.5 "Iosevka Term", "JetBrains Mono", Consolas, monospace; color:var(--parchment); }
+  .terminal { background:var(--void); }
+  .terminal pre { color:var(--parchment); }
+  .t-red { color:var(--ember); } .t-green { color:var(--brass); } .t-yellow { color:var(--old-gold); } .t-blue { color:var(--cold); }
+  .t-mag { color:var(--faded-gold); } .t-cyan { color:#7E9489; } .t-bblack { color:var(--faded-ink); } .t-bwhite { color:var(--bright); } .t-bred { color:var(--ember-bright); }
+  .problems div { padding:4px 12px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:8px; vertical-align:0; }
+  .dot.e { background:var(--ember); } .dot.w { background:var(--candle); } .dot.i { background:var(--faded-ink); } .dot.ok { background:var(--brass); }
+  .status { height:26px; display:flex; align-items:center; gap:18px; padding:0 14px; color:var(--ash); font-size:12px; margin-top:6px; }
+  .status .git { color:var(--old-paper); }
+  .swatches { display:flex; gap:4px; padding:8px 6px 0; flex-wrap:wrap; }
+  .sw { width:70px; height:34px; border-radius:4px; font:10px Consolas, monospace; display:flex; align-items:flex-end; padding:3px; color:var(--bright); border:1px solid var(--soft-border); }
+  .popup { position:absolute; left:820px; top:332px; width:330px; background:var(--iron); border:1px solid var(--border); border-radius:8px; box-shadow:0 8px 24px #0B090880; font:13px "Iosevka Term", Consolas, monospace; }
+  .popup div { padding:4px 10px; color:var(--parchment); } .popup .cur { background:var(--selection); }
+  .popup b { color:var(--candle); font-weight:600; } .popup span { color:var(--ash); float:right; }
+  .frame { position:relative; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="toolbar">
+    <div class="proj"><span class="avatar">S</span>slots-s1 <span style="color:var(--ash)">▾</span></div>
+    <span>main ▾</span>
+    <div class="run"><span class="btn">Unity Editor ▾</span><span class="btn run-b">▶ Attach</span><span class="btn stop">■</span><span class="motto">IN CODEX VERITAS</span></div>
+  </div>
+  <div class="islands">
+    <div class="stripe"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    <div class="island project">
+      <div class="tw-header">Project <span class="dim">slots-s1</span></div>
+      <div class="tree">
+        <div><span class="ico dir"></span>Assets</div>
+        <div style="padding-left:24px"><span class="ico dir"></span>Scripts</div>
+        <div style="padding-left:36px" class="sel"><span class="ico cs"></span>CourseRunner.cs</div>
+        <div style="padding-left:36px" class="mod"><span class="ico cs"></span>NavigationState.cs</div>
+        <div style="padding-left:36px" class="hover"><span class="ico cs"></span>Log.cs</div>
+        <div style="padding-left:24px"><span class="ico yaml"></span>Main.unity</div>
+        <div style="padding-left:24px"><span class="ico json"></span>manifest.json</div>
+        <div style="padding-left:12px" class="dim"><span class="ico"></span>Library <span style="font-size:11px">(excluded)</span></div>
+        <div><span class="ico dir"></span>Packages</div>
+        <div><span class="ico dir"></span>ProjectSettings</div>
+      </div>
+    </div>
+    <div class="island editor">
+      <div class="tabs"><span class="tab active">CourseRunner.cs</span><span class="tab hover">NavigationState.cs</span><span class="tab">Main.unity</span><span class="tab">manifest.json</span></div>
+<pre class="code"><span class="ln"><span class="k">using</span> <span class="ns">UnityEngine</span><span class="o">;</span></span><span class="ln"></span><span class="ln"><span class="k">namespace</span> <span class="ns">Rise.Navigation</span></span><span class="ln"><span class="o">{</span></span><span class="ln">    <span class="d">/// &lt;summary&gt;Executes a plotted course. See &lt;see cref="CourseData"/&gt;.&lt;/summary&gt;</span></span><span class="ln">    <span class="k">public sealed class</span> <span class="t">CourseRunner</span> <span class="o">:</span> <span class="t">MonoBehaviour</span></span><span class="ln">    <span class="o">{</span></span><span class="ln"><span class="g mod"></span>        <span class="o">[</span><span class="a">SerializeField</span><span class="o">]</span> <span class="k">private float</span> <span class="warn">speed</span> <span class="o">=</span> <span class="n">4.5f</span><span class="o">;</span></span><span class="ln">        <span class="k">private</span> <span class="t">NavigationState</span> <span class="usage">state</span> <span class="o">=</span> <span class="t">NavigationState</span><span class="o">.</span><span class="const">Idle</span><span class="o">;</span></span><span class="ln"></span><span class="ln">        <span class="k">public void</span> <span class="m">ExecuteCourse</span><span class="o">(</span><span class="t">CourseData</span> <span class="p">course</span><span class="o">)</span></span><span class="ln">        <span class="brace">{</span></span><span class="ln brk">            <span class="k">if</span> <span class="o">(</span><span class="usage">state</span> <span class="o">!=</span> <span class="t">NavigationState</span><span class="o">.</span><span class="const">Idle</span><span class="o">)</span></span><span class="ln">            <span class="o">{</span></span><span class="ln exec">                <span class="t">Log</span><span class="o">.</span><span class="m">Warn</span><span class="o">(</span><span class="s">"Navigation already in progress."</span><span class="o">);</span> <span class="hint">state = Idle</span></span><span class="ln">                <span class="k">return</span><span class="o">;</span></span><span class="ln">            <span class="o">}</span></span><span class="ln"></span><span class="ln cur"><span class="g ins"></span>            <span class="usage">state</span> <span class="o">=</span> <span class="t">NavigationState</span><span class="o">.</span><span class="const">Calculating</span><span class="o">;</span><span class="caret"></span>   <span class="c">// <span class="todo">TODO:</span> cancellation token</span></span><span class="ln"><span class="g ins"></span>            <span class="m">StartCoroutine</span><span class="o">(</span><span class="m">RunNavigationRoutine</span><span class="o">(</span><span class="p">course</span><span class="o">,</span> <span class="hint">retries:</span> <span class="n">0x1F</span><span class="o">));</span></span><span class="ln">            <span class="sel"><span class="t">Log</span><span class="o">.</span><span class="m">Info</span><span class="o">(</span><span class="s">$"Course {</span><span class="p">course</span><span class="o">.</span>Name<span class="s">} started"</span><span class="o">);</span></span></span><span class="ln">            <span class="m err">Telemetry</span><span class="o">.</span><span class="m">Track</span><span class="o">(</span><span class="s">"nav.start"</span><span class="o">);</span></span><span class="ln">        <span class="brace">}</span></span><span class="ln">    <span class="o">}</span></span><span class="ln"><span class="o">}</span></span></pre>
+    </div>
+    <div class="bottom">
+      <div class="pane">
+        <div class="tw-header">manifest.json <span class="dim">· Main.unity</span></div>
+<pre><span class="o">{</span>
+  <span class="">"dependencies"</span><span class="o">:</span> <span class="o">{</span>
+    <span class="">"com.unity.textmeshpro"</span><span class="o">:</span> <span class="s">"3.0.6"</span><span class="o">,</span>
+    <span class="">"com.rise.navigation"</span><span class="o">:</span> <span class="s">"file:../nav"</span>
+  <span class="o">},</span>
+  <span class="">"enableLockFile"</span><span class="o">:</span> <span class="k">true</span><span class="o">,</span> <span class="">"retries"</span><span class="o">:</span> <span class="n">3</span>
+<span class="o">}</span>
+<span class="c"># Main.unity</span>
+<span class="o">---</span> <span class="o">!u!</span><span class="n">1</span> <span class="o">&amp;</span><span class="n">158972</span>
+GameObject<span class="o">:</span>
+  m_Name<span class="o">:</span> <span class="s">Course Runner</span>
+  m_IsActive<span class="o">:</span> <span class="n">1</span></pre>
+      </div>
+      <div class="pane">
+        <div class="tw-header">Problems <span class="dim">· 1 error · 2 warnings</span></div>
+        <div class="problems">
+          <div><span class="dot e"></span><span style="color:var(--ember-bright)">Cannot resolve symbol 'Telemetry'</span> <span style="color:var(--ash)">:23</span></div>
+          <div><span class="dot w"></span>Field 'speed' is assigned but never used <span style="color:var(--ash)">:8</span></div>
+          <div><span class="dot w"></span>Unity: costly method 'GetComponent' in Update <span style="color:var(--ash)">:41</span></div>
+          <div><span class="dot i"></span><span style="color:var(--old-paper)">Consider using 'var'</span> <span style="color:var(--ash)">:9</span></div>
+          <div><span class="dot ok"></span><span style="color:var(--type)">Build succeeded</span> <span style="color:var(--ash)">12:41:07</span></div>
+        </div>
+      </div>
+      <div class="pane terminal">
+        <div class="tw-header" style="background:var(--iron)">Terminal <span class="dim">PowerShell</span></div>
+<pre>
+  <span class="t-yellow">IN CODEX VERITAS</span>
+
+<span class="t-bwhite">PS C:\Projekty\_Git\slots-s1&gt;</span> git status
+On branch <span class="t-cyan">main</span>
+Changes not staged for commit:
+        <span class="t-red">modified:   Assets/Scripts/CourseRunner.cs</span>
+        <span class="t-green">new file:   Assets/Scripts/Log.cs</span>
+<span class="t-bwhite">PS C:\Projekty\_Git\slots-s1&gt;</span> dotnet build
+  <span class="t-bblack">Determining projects to restore...</span>
+  <span class="t-blue">0x7FFE</span> <span class="t-mag">warning</span> <span class="t-bred">error CS0103</span> <span class="t-bwhite">1 Warning(s) 1 Error(s)</span></pre>
+      </div>
+    </div>
+  </div>
+  <div class="popup">
+    <div class="cur"><b>Exec</b>uteCourse(CourseData course) <span>void</span></div>
+    <div><b>Exec</b>utionPolicy <span>enum</span></div>
+    <div><b>Exec</b>Async(Func&lt;Task&gt; job) <span>Task</span></div>
+  </div>
+  <div class="status"><span class="git">⎇ main</span><span>UTF-8</span><span>CRLF</span><span>4 spaces</span><span style="color:var(--candle)">⚠ 2</span><span style="color:var(--ember-bright)">● 1</span><span style="margin-left:auto">Rider 2026.2.1 · Rise Codex</span></div>
+  <div class="swatches">
+    <div class="sw" style="background:#0B0908">void</div><div class="sw" style="background:#110E0C">obsidian</div><div class="sw" style="background:#181310">iron</div><div class="sw" style="background:#211A15">raised</div><div class="sw" style="background:#3B2D22">border</div><div class="sw" style="background:#6E5033">bronze</div><div class="sw" style="background:#A37843">old gold</div><div class="sw" style="background:#C09152;color:#110E0C">candle</div><div class="sw" style="background:#C7AE87;color:#110E0C">parchment</div><div class="sw" style="background:#9E8768;color:#110E0C">old paper</div><div class="sw" style="background:#75685A">ash</div><div class="sw" style="background:#B9663D">keyword</div><div class="sw" style="background:#B87545">copper</div><div class="sw" style="background:#8E8663;color:#110E0C">type</div><div class="sw" style="background:#748080;color:#110E0C">cold steel</div><div class="sw" style="background:#A14D3E">ember</div><div class="sw" style="background:#783A32">wax</div>
+  </div>
+</div>
+</body>
+</html>

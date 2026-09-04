@@ -1,0 +1,23 @@
+<idea-plugin>
+  <id>com.patprochazka.risecodex</id>
+  <name>Rise Codex Theme</name>
+  <version>1.0.1</version>
+  <vendor>Pat Prochazka</vendor>
+  <description><![CDATA[
+    <p><b>Rise / Codex</b> &mdash; a dark, disciplined IDE theme. Aged iron, oxidized brass, parchment,
+    candlelight and sealing wax; warm luminance hierarchy, no blue accents, red reserved for errors.</p>
+    <p>UI theme for the Islands look plus a matching editor colour scheme (C#, HLSL/ShaderLab, JSON, YAML,
+    XML, Markdown, terminal palette).</p>
+    <p><i>IN CODEX VERITAS</i></p>
+  ]]></description>
+  <change-notes><![CDATA[
+    <p>1.0.1 &mdash; text tokens lifted halfway (lighter, slightly more saturated), inactive islands less dimmed,
+    new-UI checkbox palette keys.</p>
+    <p>1.0.0 &mdash; initial release.</p>
+  ]]></change-notes>
+  <idea-version since-build="252" />
+  <depends>com.intellij.modules.platform</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="com.patprochazka.risecodex.dark" path="/rise-codex.theme.json" />
+  </extensions>
+</idea-plugin>

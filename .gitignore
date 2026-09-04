@@ -1,0 +1,6 @@
+__pycache__/
+backup/
+dist/
+ref/
+.claude/
+*.pyc
